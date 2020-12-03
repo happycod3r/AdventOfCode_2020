@@ -2,9 +2,9 @@
 
 ## Notes
 
-### 1 
+### Day 1 
 https://adventofcode.com/2020/day/1/input
 
-### 2
+### Day 2
 
-### 3
+### Day 3
