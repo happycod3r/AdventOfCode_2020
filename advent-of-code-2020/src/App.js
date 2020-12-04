@@ -121,9 +121,6 @@ function countTrees(){
 
         const rows = input.value.split('\n');
         
-        const numberOfRows = rows.length;
-
-
         for(let i in rows){
             const n = 15;
             for(let d = 0; d < n; d++){
@@ -149,6 +146,55 @@ function countTrees(){
 
 
 
+function countTrees2(){
+    const input = document.getElementsByTagName('textarea')[3];
+    if(input){
+        let treeCounter = 0;
+        
+        const tree = '#';
+
+        const rows = input.value.split('\n');
+
+        for(let i in rows){
+            const n = 15;
+            for(let d = 0; d < n; d++){
+                rows[i] += rows[i]; 
+            }
+        }
+
+        const slopes = [
+            '1 1',
+            '3 1',
+            '5 1',
+            '7 1',
+            '1 2'
+        ]
+
+        slopes.forEach((slope) => {
+            const right = Number(slope.split(' ')[0]);
+            const down = Number(slope.split(' ')[1]);
+
+            let slopeCounter = 0;
+
+            let x = right;
+            for(let y=down; y<rows.length; y=y+down){
+                if(rows[y][x] === tree){
+                    slopeCounter++;
+                }               
+                x = x + right; 
+            }
+
+            treeCounter = treeCounter === 0 ? slopeCounter : treeCounter * slopeCounter; 
+        })
+
+        document.getElementsByClassName('output')[5].innerHTML = 'Nr of trees: ' + treeCounter;
+    }
+
+}
+
+
+
+
 function App() {
   return (
       <div className="App">
@@ -156,7 +202,8 @@ function App() {
             <br/>
       
             <h1>Day 1</h1>
-            <div>
+<br/>
+      <div>
                 <input type='text' id='inputId' className='input'/>
                 <button className='button' onClick={() => Calculate()}>
                     Go
@@ -164,7 +211,8 @@ function App() {
                 <br/>
                 <div className='output'/>
             </div>
-            <div>
+     <br/>
+      <div>
                 <input type='text' id='inputId' className='input'/>
                 <button className='button' onClick={() => Calculate2()}>
                     Go
@@ -173,7 +221,8 @@ function App() {
                 <div className='output'/>
             </div>
             <h1>Day 2</h1>
-            <div>
+      <br/>    
+      <div>
                 <textarea type='text' id='textareaId' className='textarea'/>
                 <button className='button' onClick={() => validPassCount()}>
                     Go
@@ -181,7 +230,8 @@ function App() {
                 <br/>
                 <div className='output'/>
             </div>
-            <div>
+      <br/>     
+      <div>
                 <textarea type='text' id='textareaId' className='textarea'/>
                 <button className='button' onClick={() => validPassCount2()}>
                     Go
@@ -190,9 +240,20 @@ function App() {
                 <div className='output'/>
             </div>
             <h1>Day 3</h1>
-            <div>
+      <br/>     
+      <div>
                 <textarea type='text' id='textareaId' className='textarea'/>
                 <button className='button' onClick={() => countTrees()}>
+                    Go
+                </button>
+                <br/>
+                <div className='output'/>
+            </div>
+
+        <br/>
+      <div>
+                <textarea type='text' id='textareaId' className='textarea'/>
+                <button className='button' onClick={() => countTrees2()}>
                     Go
                 </button>
                 <br/>
