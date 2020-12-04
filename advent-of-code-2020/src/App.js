@@ -193,6 +193,134 @@ function countTrees2(){
 }
 
 
+function validPassports(){
+    const input = document.getElementsByTagName('textarea')[4];
+    
+    const passPortList = input.value.split('\n\n');
+
+    const required = [
+        'byr',
+        'iyr',
+        'eyr',
+        'hgt',
+        'hcl',
+        'ecl',
+        'pid'
+    ]
+
+    let validCounter = 0;
+
+    passPortList.forEach(item => {
+        const values = item.split(/[\s\n]+/);
+        
+        const cidIndex = values.findIndex(elem => elem.includes('cid'));
+
+        if(cidIndex !== -1){
+            values.splice(cidIndex, 1);
+        }
+
+        if(values.length >= required.length){
+            validCounter++;
+        }
+    });
+
+
+    document.getElementsByClassName('output')[6].innerHTML = 'Nr of valid Passports: ' + validCounter;
+}
+
+
+function validPassports2(){
+  const input = document.getElementsByTagName('textarea')[5];
+    
+    const passPortList = input.value.split('\n\n');
+
+    const required = [
+        'byr',
+        'iyr',
+        'eyr',
+        'hgt',
+        'hcl',
+        'ecl',
+        'pid'
+    ]
+
+    let validCounter = 0;
+
+    passPortList.forEach(item => {
+        const values = item.split(/[\s\n]+/);
+        
+        const cidIndex = values.findIndex(elem => elem.includes('cid'));
+
+        if(cidIndex !== -1){
+            values.splice(cidIndex, 1);
+        }
+
+        if(values.length >= required.length){
+            let innerCounter = 0;
+                
+            values.forEach(value => {
+                const fields = value.split(':');
+
+                if(fields[0] === required[0]){
+                    if(fields[1].length && Number(fields[1]) >= 1920 && Number(fields[1]) <= 2002){
+                        innerCounter++;
+                    } 
+                }
+
+               if(fields[0] === required[1]){
+                    if(fields[1].length && Number(fields[1]) >= 2010 && Number(fields[1]) <= 2020){
+                        innerCounter++;
+                    } 
+                }
+
+                if(fields[0] === required[2]){
+                    if(fields[1].length && Number(fields[1]) >= 2020 && Number(fields[1]) <= 2030){
+                        innerCounter++;
+                    } 
+                }
+
+                if(fields[0] === required[3]){
+                    if(fields[1].includes('cm')){
+                        if(Number(fields[1].slice(0, -2)) >= 150 && Number(fields[1].slice(0, -2)) <= 193){
+                            innerCounter++;
+                        }
+                    }
+                    if(fields[1].includes('in')){
+                        if(Number(fields[1].slice(0, -2)) >= 59 && Number(fields[1].slice(0, -2)) <= 76){
+                            innerCounter++;
+                        }
+                    }
+                }
+
+                if(fields[0] === required[4]){
+                    if(fields[1].includes('#') && fields[1].match(/[0-9a-f]+/g) && fields[1].length === 7){
+                        innerCounter++;
+                    }
+                }
+
+                if(fields[0] === required[5]){
+                    if(fields[1] === 'amb' || fields[1] === 'blu' || fields[1] === 'brn' || fields[1] === 'gry' || fields[1] === 'grn' || fields[1] === 'hzl' || fields[1] === 'oth'){
+                        innerCounter++;
+                    }
+                }
+
+                if(fields[0] === required[6]){
+                    if( fields[1].match(/[0-9]+/g) && fields[1].length === 9){
+                        innerCounter++;
+                    }
+                }
+                
+            });
+
+            if(innerCounter === required.length){
+                validCounter++;
+            }
+        }
+    });
+
+
+    document.getElementsByClassName('output')[7].innerHTML = 'Nr of valid Passports: ' + validCounter;
+}
 
 
 function App() {
@@ -254,6 +382,27 @@ function App() {
       <div>
                 <textarea type='text' id='textareaId' className='textarea'/>
                 <button className='button' onClick={() => countTrees2()}>
+                    Go
+                </button>
+                <br/>
+                <div className='output'/>
+            </div>
+
+            <h1>Day 4</h1>
+      <br/>     
+      <div>
+                <textarea type='text' id='textareaId' className='textarea'/>
+                <button className='button' onClick={() => validPassports()}>
+                    Go
+                </button>
+                <br/>
+                <div className='output'/>
+            </div>
+
+        <br/>
+      <div>
+                <textarea type='text' id='textareaId' className='textarea'/>
+                <button className='button' onClick={() => validPassports2()}>
                     Go
                 </button>
                 <br/>
