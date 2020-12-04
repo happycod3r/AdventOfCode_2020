@@ -98,7 +98,7 @@ function validPassCount2(){
 
             const pass = item.split(': ')[1];
             
-            if((pass[pos1] === letter && pass[pos2] != letter) || (pass[pos1] != letter && pass[pos2] === letter)) {
+            if((pass[pos1] === letter && pass[pos2] !== letter) || (pass[pos1] !== letter && pass[pos2] === letter)) {
                 counter++;
             }
 
@@ -108,6 +108,44 @@ function validPassCount2(){
     }
 
 }
+
+
+
+function countTrees(){
+    const input = document.getElementsByTagName('textarea')[2];
+    if(input){
+        let treeCounter = 0;
+        const tree = '#';
+
+        let columnIndex = 0;
+
+        const rows = input.value.split('\n');
+        
+        const numberOfRows = rows.length;
+
+
+        for(let i in rows){
+            const n = 15;
+            for(let d = 0; d < n; d++){
+                rows[i] += rows[i]; 
+            }
+        }
+
+        rows.forEach((item, index) => {
+            if(index !== 0){
+
+                columnIndex = columnIndex + 3;
+                if(item[columnIndex] === tree){
+                    treeCounter++; 
+                }
+            }
+        })
+
+        document.getElementsByClassName('output')[4].innerHTML = 'Nr of trees: ' + treeCounter;
+    }
+
+}
+
 
 
 
@@ -146,6 +184,15 @@ function App() {
             <div>
                 <textarea type='text' id='textareaId' className='textarea'/>
                 <button className='button' onClick={() => validPassCount2()}>
+                    Go
+                </button>
+                <br/>
+                <div className='output'/>
+            </div>
+            <h1>Day 3</h1>
+            <div>
+                <textarea type='text' id='textareaId' className='textarea'/>
+                <button className='button' onClick={() => countTrees()}>
                     Go
                 </button>
                 <br/>
