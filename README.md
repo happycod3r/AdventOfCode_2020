@@ -4,6 +4,17 @@ https://adventofcode.com/2020
 
 ## Notes
 
+to edit go to **App.js**
+
+to run and debug
+
+```
+$ cd advent-of-code-2020
+$ npm run start
+```
+
+## Days Log
+
 ### Day 1
 https://adventofcode.com/2020/day/1
 
