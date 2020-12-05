@@ -12,11 +12,24 @@ input: https://adventofcode.com/2020/day/1/input
 ### Day 2
 https://adventofcode.com/2020/day/2
 
+input: https://adventofcode.com/2020/day/2/input
+
 ### Day 3
 https://adventofcode.com/2020/day/3
+
+input: https://adventofcode.com/2020/day/3/input
 
 ### Day 4
 https://adventofcode.com/2020/day/4
 
+input: https://adventofcode.com/2020/day/4/input
+
 ### Day 5
 https://adventofcode.com/2020/day/5
+
+input: https://adventofcode.com/2020/day/5/input
+
+### Day 5
+https://adventofcode.com/2020/day/6
+
+input: https://adventofcode.com/2020/day/6/input
