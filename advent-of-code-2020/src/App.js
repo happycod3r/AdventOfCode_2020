@@ -468,7 +468,6 @@ function getMySeat() {
         }
     });
 
-
     document.getElementsByClassName('output')[9].innerHTML = 'The seat is: ' + seatScore;
 }
 
