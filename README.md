@@ -40,7 +40,7 @@ https://adventofcode.com/2020/day/5
 
 input: https://adventofcode.com/2020/day/5/input
 
-### Day 5
+### Day 6
 https://adventofcode.com/2020/day/6
 
 input: https://adventofcode.com/2020/day/6/input
