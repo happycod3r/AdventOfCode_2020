@@ -8,7 +8,7 @@
             "name": "advent_of_code_2020",
             "request": "launch",
             "type": "dart",
-            "program": "${workspaceFolder}\\bin\\advent_of_code_2020.dart"
+            "program": "${workspaceFolder}\\bin\\app.dart"
         }
     ]
 }
