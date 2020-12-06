@@ -49,7 +49,12 @@ https://adventofcode.com/2020/day/5
 
 input: https://adventofcode.com/2020/day/5/input
 
-### Day 6
+### Day 6 [Dart]
 https://adventofcode.com/2020/day/6
 
 input: https://adventofcode.com/2020/day/6/input
+
+### Day 7 [Dart]
+https://adventofcode.com/2020/day/7
+
+input: https://adventofcode.com/2020/day/7/input
