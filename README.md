@@ -24,27 +24,27 @@ $ dart run
 
 ## Days Log
 
-### Day 1
+### Day 1 [JS]
 https://adventofcode.com/2020/day/1
 
 input: https://adventofcode.com/2020/day/1/input
 
-### Day 2
+### Day 2 [JS]
 https://adventofcode.com/2020/day/2
 
 input: https://adventofcode.com/2020/day/2/input
 
-### Day 3
+### Day 3 [JS]
 https://adventofcode.com/2020/day/3
 
 input: https://adventofcode.com/2020/day/3/input
 
-### Day 4
+### Day 4 [JS]
 https://adventofcode.com/2020/day/4
 
 input: https://adventofcode.com/2020/day/4/input
 
-### Day 5
+### Day 5 [JS]
 https://adventofcode.com/2020/day/5
 
 input: https://adventofcode.com/2020/day/5/input
