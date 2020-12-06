@@ -4,6 +4,8 @@ https://adventofcode.com/2020
 
 ## Notes
 
+### JS
+
 to edit go to **App.js**
 
 to run and debug
@@ -11,6 +13,13 @@ to run and debug
 ```
 $ cd advent-of-code-2020
 $ npm run start
+```
+
+### Dart
+
+```
+$ cd ...
+$ dart run
 ```
 
 ## Days Log
