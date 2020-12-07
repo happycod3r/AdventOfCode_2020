@@ -1,92 +1,122 @@
 import 'dart:io';
 
+class Bag {
+  final String color;
+  Map<Bag, int> children;
+  List<Bag> parents;
+
+  Bag(this.color, [this.children]) {
+    children = {};
+    parents = [];
+  }
+}
+
 class Day7 {
-  static List<Map<dynamic, dynamic>> parseList(List<String> list) {
-    List<Map<dynamic, dynamic>> resultList = [];
+  static List<Bag> getListOfBags(String input) {
+    var list = input.split('\r\n');
+    var bags = <Bag>[];
 
-    list.forEach((element) {
-      var parsedElem = element.split(' bags contain ');
-      var listOfContent = parsedElem[1].split(', ');
+    list.forEach((line) {
+      var parsedLine =
+          line.replaceAll('bags', '').replaceAll('bag', '').replaceAll('.', '');
+      var rule = parsedLine.split('contain');
+      var rootColor = rule[0].substring(0).trim();
 
-      listOfContent[listOfContent.length - 1] =
-          listOfContent[listOfContent.length - 1].contains('.')
-              ? listOfContent[listOfContent.length - 1].substring(
-                  0, listOfContent[listOfContent.length - 1].length - 1)
-              : listOfContent[listOfContent.length - 1];
+      Bag root;
+      if (bags.isNotEmpty) {
+        root = bags.firstWhere((bag) => bag.color == rootColor,
+            orElse: () => null);
+      }
+      root ??= Bag(rootColor);
+      bags.add(root);
 
-      resultList.add({
-        'bag': parsedElem[0],
-        'content': listOfContent,
-      });
-    });
+      var bagsInside = rule[1].split(',');
 
-    return resultList;
-  }
+      for (var i = 0; i < bagsInside.length; i++) {
+        if (!bagsInside.contains(' no other ')) {
+          var color = bagsInside[i].trim().substring(1).trim();
+          var quant = int.parse(bagsInside[i].trim().substring(0, 1));
 
-  static List<Map<dynamic, dynamic>> getMatches(
-      List<Map<dynamic, dynamic>> input, String searchWord) {
-    List<Map<dynamic, dynamic>> result = [];
+          Bag innerBag;
+          if (bags.isNotEmpty) {
+            innerBag = bags.firstWhere((bag) => bag.color == color,
+                orElse: () => null);
+          }
+          innerBag ??= Bag(color);
+          bags.add(innerBag);
 
-    input.forEach((rule) {
-      (rule['content'] as List).forEach((content) {
-        if (content.toString().contains(searchWord)) {
-          result.add(rule);
+          innerBag.parents.add(root);
+
+          root.children.addAll({innerBag: quant});
         }
-      });
+      }
     });
 
-    return result;
+    return bags;
   }
 
-  static int getBagCount() {
+  static List<Bag> getTransitiveParents(Bag bag) {
+    var p = <Bag>[];
+    bag.parents.forEach((element) {
+      p.add(element);
+      p.addAll(getTransitiveParents(element));
+    });
+
+    var resul = <Bag>[];
+    p.forEach((element) {
+      if (!resul.contains(element)) {
+        resul.add(element);
+      }
+    });
+
+    return resul;
+  }
+
+  static int first() {
     var input = File('./lib/input/day7').readAsStringSync();
 
-    var searchWord = 'shiny gold';
-    // var counter = 0;
+    var bags = getListOfBags(input);
+    var key = 'shiny gold';
 
-    var listOfRules = input.split('\r\n');
+    Bag dummy;
+    if (bags.isNotEmpty) {
+      dummy = bags.firstWhere((element) => element.color == key);
+    }
 
-    var matchedRules = [];
-    var level1 = [];
-    var level2 = [];
-    var level3 = [];
+    var resList = getTransitiveParents(dummy);
 
-    var listParsed = parseList(listOfRules);
+    return resList.length;
+  }
 
-    // * contain at least one
-    matchedRules = getMatches(listParsed, searchWord);
+  static int countBags(Bag bag) {
+    var total = 0;
+    if (bag.children.isEmpty) {
+      return 1;
+    }
 
-    level1.addAll(matchedRules);
-    level2.addAll(matchedRules);
-    level3.addAll(matchedRules);
+    total += 1;
+    bag.children.keys.forEach((b) {
+      var c = countBags(b);
+      var n = bag.children[b];
 
-    matchedRules.forEach((element) {
-      level1.addAll(getMatches(listParsed, element['bag']));
+      total = total + (n * c);
     });
+    return total;
+  }
 
-    level2.addAll(level1);
-    level3.addAll(level1);
+  static int second() {
+    var input = File('./lib/input/day7').readAsStringSync();
 
-    level1.forEach((element) {
-      level2.addAll(getMatches(listParsed, element['bag']));
-    });
+    var bags = getListOfBags(input);
+    var key = 'shiny gold';
 
-    level3.addAll(level2);
+    Bag dummy;
+    if (bags.isNotEmpty) {
+      dummy = bags.firstWhere((element) => element.color == key);
+    }
 
-    level2.forEach((element) {
-      level3.addAll(getMatches(listParsed, element['bag']));
-    });
+    var count = countBags(dummy);
 
-    // parsedList.forEach((rule) {
-    //   (rule['content'] as List).forEach((content) {
-    //     directRules.forEach((directRule) {
-    //       if (content.toString().contains(directRule['bag'])) {
-    //         counter++;
-    //       }
-    //     });
-    //   });
-    // });
-
-    return 0;
+    return count;
   }
 }
