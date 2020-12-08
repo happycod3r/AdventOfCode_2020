@@ -33,22 +33,23 @@ class Day7 {
       var bagsInside = rule[1].split(',');
 
       for (var i = 0; i < bagsInside.length; i++) {
-        if (!bagsInside.contains(' no other ')) {
-          var color = bagsInside[i].trim().substring(1).trim();
-          var quant = int.parse(bagsInside[i].trim().substring(0, 1));
-
-          Bag innerBag;
-          if (bags.isNotEmpty) {
-            innerBag = bags.firstWhere((bag) => bag.color == color,
-                orElse: () => null);
-          }
-          innerBag ??= Bag(color);
-          bags.add(innerBag);
-
-          innerBag.parents.add(root);
-
-          root.children.addAll({innerBag: quant});
+        if (bagsInside[i].trim().startsWith('no other')) {
+          continue;
         }
+
+        var color = bagsInside[i].trim().substring(1).trim();
+        var quant = int.parse(bagsInside[i].trim().substring(0, 1));
+
+        Bag innerBag;
+        if (bags.isNotEmpty) {
+          innerBag =
+              bags.firstWhere((bag) => bag.color == color, orElse: () => null);
+        }
+        innerBag ??= Bag(color);
+        bags.add(innerBag);
+
+        innerBag.parents.add(root);
+        root.children.addAll({innerBag: quant});
       }
     });
 
@@ -94,13 +95,13 @@ class Day7 {
       return 1;
     }
 
-    total += 1;
     bag.children.keys.forEach((b) {
-      var c = countBags(b);
-      var n = bag.children[b];
-
-      total = total + (n * c);
+      total += bag.children[b] * countBags(b);
     });
+
+    if (!bag.color.contains('shiny gold')) {
+      total += 1;
+    }
     return total;
   }
 
@@ -108,11 +109,19 @@ class Day7 {
     var input = File('./lib/input/day7').readAsStringSync();
 
     var bags = getListOfBags(input);
+
+    var resul = <Bag>[];
+    bags.forEach((element) {
+      if (!resul.contains(element)) {
+        resul.add(element);
+      }
+    });
+
     var key = 'shiny gold';
 
     Bag dummy;
-    if (bags.isNotEmpty) {
-      dummy = bags.firstWhere((element) => element.color == key);
+    if (resul.isNotEmpty) {
+      dummy = resul.where((element) => element.color == key).toList().first;
     }
 
     var count = countBags(dummy);
