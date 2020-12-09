@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'dart:isolate';
+
+import 'dart:math';
 
 class Instruction {
   String instruction;
@@ -10,6 +13,19 @@ class Instruction {
 
   Instruction(this.instruction, this.ope, this.number) {
     haveRunned = false;
+  }
+
+  dynamic toJson() {
+    return {
+      'instruction': instruction,
+      'ope': ope,
+      'number': number,
+      'haveRunned': haveRunned
+    };
+  }
+
+  static Instruction map(Map<String, dynamic> json) {
+    return Instruction(json['instruction'], json['ope'], json['number']);
   }
 }
 
@@ -83,16 +99,15 @@ class Day8 {
     return accumulator;
   }
 
-  static Map<int, int> getInnerAcc(int index, List<Instruction> instructions) {
-    var innerAccumulator = 0;
-
+  static Map<int, int> getInnerAcc(
+      int index, List<Instruction> instructions, int accumulator) {
     switch (instructions[index].instruction) {
       case 'acc':
         instructions[index].haveRunned = true;
         if (instructions[index].ope == '+') {
-          innerAccumulator += instructions[index].number;
+          accumulator += instructions[index].number;
         } else {
-          innerAccumulator -= instructions[index].number;
+          accumulator -= instructions[index].number;
         }
         index++;
         break;
@@ -112,97 +127,75 @@ class Day8 {
         break;
     }
 
-    return {index: innerAccumulator};
+    return {index: accumulator};
   }
 
-  static dynamic doTheThing(
+  static List<List<Instruction>> getPossibleInstructions(
     List<Instruction> instructions,
-    int accumulator,
-    int index,
-    int previousIndex,
-    bool errorFixed,
-    SendPort sendPort,
   ) {
-    try {
-      print(
-          'isolate start: ' + accumulator.toString() + ' ' + index.toString());
-      while (true) {
-        if (index == instructions.length - 1) {
+    var listOfInstructions = <List<Instruction>>[];
+    listOfInstructions.add(instructions);
+
+    for (var i = 0; i < instructions.length; i++) {
+      // * Creating a new list
+      List<dynamic> newList = json
+          .decode(json.encode((instructions.map((e) => e.toJson())).toList()));
+      var tempinsts = newList.map((e) => Instruction.map(e)).toList();
+
+      switch (tempinsts[i].instruction) {
+        case 'jmp':
+          tempinsts[i].instruction = 'nop';
           break;
-        }
-
-        previousIndex = index;
-
-        var innerResult = getInnerAcc(index, instructions);
-        index = innerResult.keys.first;
-        accumulator = innerResult.values.first;
-
-        // * here is checking the next instruction
-        if (!errorFixed) {
-          // * change previous instruction to fix error
-          switch (instructions[previousIndex].instruction) {
-            case 'jmp':
-              instructions[previousIndex].instruction = 'nop';
-              break;
-            case 'nop':
-              instructions[previousIndex].instruction = 'jmp';
-              break;
-            default:
-              break;
-          }
-          Isolate.spawn(
-              doTheThing(
-                instructions,
-                accumulator,
-                index,
-                previousIndex,
-                errorFixed,
-                sendPort,
-              ),
-              sendPort);
-          errorFixed = true;
-        }
+        case 'nop':
+          tempinsts[i].instruction = 'jmp';
+          break;
+        default:
+          break;
       }
-    } catch (e) {
-      sendPort.send(e.toString());
-    } finally {
-      sendPort.send(accumulator);
+      listOfInstructions.add(tempinsts);
     }
+
+    return listOfInstructions;
   }
 
   static int getAccValueAtProgEnd(List<Instruction> instructions) {
     var index = 0;
-    var previousIndex = index;
-
-    var errorFixed = false;
-
     var accumulator = 0;
 
-    var receivePort = ReceivePort();
-    receivePort.listen((data) {
-      accumulator = data;
-    });
-    Isolate.spawn(
-      doTheThing(
-        instructions,
-        accumulator,
-        index,
-        previousIndex,
-        errorFixed,
-        receivePort.sendPort,
-      ),
-      receivePort.sendPort,
-    );
+    while (index < instructions.length - 1) {
+      var innerResult = getInnerAcc(index, instructions, accumulator);
+      index = innerResult.keys.first;
+      accumulator = innerResult.values.first;
 
-    print('result is ======>>>>  ' + accumulator.toString());
+      if (instructions[index].haveRunned) {
+        return -1;
+      }
+    }
 
     return accumulator;
+  }
+
+  static dynamic test(SendPort sendPort) {
+    sendPort.send('test');
   }
 
   static int second() {
     var input = File('./lib/input/day8').readAsStringSync();
     var instructions = parseInput(input);
 
-    return getAccValueAtProgEnd(instructions);
+    var listOfPossibleSolutions = getPossibleInstructions(instructions);
+
+    var result = 0;
+
+    for (var e in listOfPossibleSolutions) {
+      result = getAccValueAtProgEnd(e);
+      if (result != -1) {
+        break;
+      }
+    }
+
+    return result;
   }
 }
+
+class Instructions {}
