@@ -1,4 +1,4 @@
-import '../lib/day8.dart';
+import '../lib/day9.dart';
 
 void main(List<String> arguments) {
   //print('Day 6.1 result is: ' + Day6.getYesSum().toString());
@@ -6,5 +6,6 @@ void main(List<String> arguments) {
   //print('Day 7.1 result is: ' + Day7.first().toString());
   //print('Day 7.2 result is: ' + Day7.second().toString());
   //print('Day 8.1 result is: ' + Day8.first().toString());
-  print('Day 8.2 result is: ' + Day8.second().toString());
+  //print('Day 8.2 result is: ' + Day8.second().toString());
+  print('Day 8.2 result is: ' + Day9.first().toString());
 }
