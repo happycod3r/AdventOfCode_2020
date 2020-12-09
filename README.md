@@ -68,3 +68,8 @@ input: https://adventofcode.com/2020/day/8/input
 https://adventofcode.com/2020/day/9
 
 input: https://adventofcode.com/2020/day/9/input
+
+### Day 10 [Dart]
+https://adventofcode.com/2020/day/10
+
+input: https://adventofcode.com/2020/day/10/input
