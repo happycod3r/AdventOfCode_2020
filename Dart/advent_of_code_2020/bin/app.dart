@@ -7,5 +7,6 @@ void main(List<String> arguments) {
   //print('Day 7.2 result is: ' + Day7.second().toString());
   //print('Day 8.1 result is: ' + Day8.first().toString());
   //print('Day 8.2 result is: ' + Day8.second().toString());
-  print('Day 8.2 result is: ' + Day9.first().toString());
+  //print('Day 8.1 result is: ' + Day9.first().toString());
+  print('Day 8.2 result is: ' + Day9.second().toString());
 }
