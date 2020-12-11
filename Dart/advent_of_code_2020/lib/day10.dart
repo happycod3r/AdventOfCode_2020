@@ -1,8 +1,5 @@
 import 'dart:io';
 
-const outputDiff = 3;
-const inputDiff = [1, 2, 3];
-
 class Day10 {
   static int first() {
     var input = File('./lib/input/day10').readAsStringSync();
@@ -28,23 +25,17 @@ class Day10 {
     var threeJoltDiffs = 0;
 
     var i = 0;
-    var counter = seatJoltage;
     while (i < input.length - 1) {
-      counter = input[i];
-      var d = 1;
-      while (d <= 3) {
-        i = input.indexWhere((element) => element == counter + d);
-        if (i != -1 && d == 1) {
-          oneJoltDiffs++;
-          break;
-        }
-        if (i != -1 && d == 3) {
-          threeJoltDiffs++;
-          break;
-        }
-        d++;
+      if (input[i + 1] - input[i] == 1) {
+        oneJoltDiffs++;
       }
+      if (input[i + 1] - input[i] == 3) {
+        threeJoltDiffs++;
+      }
+      i++;
     }
+    oneJoltDiffs++;
+    threeJoltDiffs++;
 
     return {oneJoltDiffs: threeJoltDiffs};
   }
