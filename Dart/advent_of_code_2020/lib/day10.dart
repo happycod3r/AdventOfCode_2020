@@ -39,4 +39,15 @@ class Day10 {
 
     return {oneJoltDiffs: threeJoltDiffs};
   }
+
+  static int second() {
+    var input = File('./lib/input/day10').readAsStringSync();
+    var parsedInput = parseInput(input);
+    parsedInput.sort();
+
+    var seatJoltage = 0;
+    var deviceJoltage = parsedInput.last + 3;
+
+    return -1;
+  }
 }
